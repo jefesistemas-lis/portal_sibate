@@ -180,6 +180,49 @@ const signToken = (user) => {
   )
 }
 
+const buildAdminAnalytics = () => {
+  const store = loadStore()
+  const loginEvents = store.audit_logs.filter((log) => log.action === 'login_success')
+  const failedEvents = store.audit_logs.filter((log) => log.action === 'login_failed')
+  const now = Date.now()
+  const dayMs = 24 * 60 * 60 * 1000
+
+  const usageByDay = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(now - ((6 - index) * dayMs))
+    const dateKey = date.toISOString().slice(0, 10)
+    const dayLogins = loginEvents.filter((entry) => entry.created_at.slice(0, 10) === dateKey)
+    const uniqueUsers = new Set(dayLogins.map((entry) => entry.email)).size
+
+    return {
+      date: dateKey,
+      users: uniqueUsers,
+      sessions: dayLogins.length,
+    }
+  })
+
+  const totalSessions = loginEvents.length
+  const activeUsers = store.users.filter((user) => user.status === 'active').length
+  const adminUsers = store.users.filter((user) => ['superadmin', 'admin'].includes(user.role)).length
+  const errorRate = totalSessions + failedEvents.length === 0
+    ? 0
+    : Number(((failedEvents.length / (totalSessions + failedEvents.length)) * 100).toFixed(1))
+  const performanceScore = Math.max(0, Math.min(100, Math.round(100 - errorRate * 1.8 + Math.min(activeUsers, 12) * 1.2)))
+
+  return {
+    summary: {
+      totalUsers: store.users.length,
+      activeUsers,
+      adminUsers,
+      totalSessions,
+      loginFailureCount: failedEvents.length,
+      todayLogins: usageByDay[usageByDay.length - 1]?.sessions || 0,
+      errorRate,
+      performanceScore,
+    },
+    usageByDay,
+  }
+}
+
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization
   const tokenFromCookie = req.cookies?.portal_session
@@ -423,6 +466,11 @@ app.get('/api/admin/summary', authMiddleware, requirePermission('view_audit'), (
       roles,
     },
   })
+})
+
+app.get('/api/admin/analytics', authMiddleware, requireRole(['superadmin', 'admin']), (req, res) => {
+  const analytics = buildAdminAnalytics()
+  res.json({ analytics })
 })
 
 app.get('/api/admin/users', authMiddleware, requirePermission('manage_users'), (req, res) => {

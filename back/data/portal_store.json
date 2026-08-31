@@ -15,12 +15,155 @@
         "manage_training"
       ],
       "created_at": "2026-08-31T19:20:04.841Z",
-      "updated_at": "2026-08-31T19:20:10.806Z",
+      "updated_at": "2026-08-31T20:07:59.012Z",
       "last_login": null,
       "picture": ""
     }
   ],
   "audit_logs": [
+    {
+      "id": "log-1788206879027-dc3c2e",
+      "email": "jefesistemas@lis.com.co",
+      "action": "login_success",
+      "module": "auth",
+      "details": {
+        "role": "superadmin"
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "created_at": "2026-08-31T20:07:59.027Z"
+    },
+    {
+      "id": "log-1788206601222-d57475",
+      "email": "user",
+      "action": "logout",
+      "module": "auth",
+      "details": {
+        "message": "Sesión cerrada"
+      },
+      "success": true,
+      "ip_address": "unknown",
+      "user_agent": "system",
+      "created_at": "2026-08-31T20:03:21.222Z"
+    },
+    {
+      "id": "log-1788205792712-637bcc",
+      "email": "jefesistemas@lis.com.co",
+      "action": "login_success",
+      "module": "auth",
+      "details": {
+        "role": "superadmin"
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "created_at": "2026-08-31T19:49:52.712Z"
+    },
+    {
+      "id": "log-1788205787769-2636d2",
+      "email": "user",
+      "action": "logout",
+      "module": "auth",
+      "details": {
+        "message": "Sesión cerrada"
+      },
+      "success": true,
+      "ip_address": "unknown",
+      "user_agent": "system",
+      "created_at": "2026-08-31T19:49:47.769Z"
+    },
+    {
+      "id": "log-1788205219861-5d80f2",
+      "email": "jefesistemas@lis.com.co",
+      "action": "login_success",
+      "module": "auth",
+      "details": {
+        "role": "superadmin"
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "created_at": "2026-08-31T19:40:19.861Z"
+    },
+    {
+      "id": "log-1788205214561-7aaa1b",
+      "email": "user",
+      "action": "logout",
+      "module": "auth",
+      "details": {
+        "message": "Sesión cerrada"
+      },
+      "success": true,
+      "ip_address": "unknown",
+      "user_agent": "system",
+      "created_at": "2026-08-31T19:40:14.561Z"
+    },
+    {
+      "id": "log-1788204855732-074910",
+      "email": "jefesistemas@lis.com.co",
+      "action": "login_success",
+      "module": "auth",
+      "details": {
+        "role": "superadmin"
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.135.0 Chrome/148.0.7778.280 Electron/42.8.1 Safari/537.36",
+      "created_at": "2026-08-31T19:34:15.732Z"
+    },
+    {
+      "id": "log-1788204816902-be0ef7",
+      "email": "jefesistemas@lis.com.co",
+      "action": "login_success",
+      "module": "auth",
+      "details": {
+        "role": "superadmin"
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "created_at": "2026-08-31T19:33:36.902Z"
+    },
+    {
+      "id": "log-1788204810694-f1891a",
+      "email": "user",
+      "action": "logout",
+      "module": "auth",
+      "details": {
+        "message": "Sesión cerrada"
+      },
+      "success": true,
+      "ip_address": "unknown",
+      "user_agent": "system",
+      "created_at": "2026-08-31T19:33:30.694Z"
+    },
+    {
+      "id": "log-1788204457967-eed166",
+      "email": "jefesistemas@lis.com.co",
+      "action": "login_success",
+      "module": "auth",
+      "details": {
+        "role": "superadmin"
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "created_at": "2026-08-31T19:27:37.967Z"
+    },
+    {
+      "id": "log-1788204450475-fc7756",
+      "email": "user",
+      "action": "logout",
+      "module": "auth",
+      "details": {
+        "message": "Sesión cerrada"
+      },
+      "success": true,
+      "ip_address": "unknown",
+      "user_agent": "system",
+      "created_at": "2026-08-31T19:27:30.475Z"
+    },
     {
       "id": "log-1788204010812-e8b55f",
       "email": "jefesistemas@lis.com.co",

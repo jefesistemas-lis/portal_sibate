@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { GoogleLogin } from '@react-oauth/google'
 import './App.css'
 import logoLis from '../img/logo-lis-footer.png'
 import seguridadPic1 from '../img/seguridad-img/pic1.png'
 import seguridadPic2 from '../img/seguridad-img/pic2.png'
 import seguridadPic3 from '../img/seguridad-img/pic3.png'
-import { canAccessInformationLevel, securityPolicy, userAccessLevel } from './securityPolicy'
+import { canAccessInformationLevel, getRoleAccessLevel, securityPolicy } from './securityPolicy'
 
 const securitySubmodules = {
   Inicio: {
@@ -139,22 +139,57 @@ const securitySubmodules = {
     icon: '🧰',
     tag: 'Operación',
     status: 'OK',
-    summary: 'Verificación previa a la operación para garantizar continuidad segura.',
-    items: [
-      { title: 'Checklist', description: 'Validación de condiciones previas al trabajo y equipos.', tone: 'good' },
-      { title: 'No conformidades', description: 'Se registran observaciones para cierre inmediato.', tone: 'warn' },
-      { title: 'Reportes', description: 'Seguimiento de cumplimiento por turno y responsable.', tone: 'info' },
+    summary: 'Verificación previa a la operación para garantizar continuidad segura y detectar condiciones de riesgo antes del trabajo.',
+    tools: [
+      { name: 'Preoperacional Estibadores', description: 'Checklist de revisión previa para estibadores y condiciones de operación segura.', link: 'https://forms.gle/9CXjrHbVUTsHZTQJ8', weeklyVisits: 3 },
+      { name: 'Preoperacional Carretillas', description: 'Validación del estado de las carretillas, ruedas, frenos y carga segura.', link: 'https://forms.gle/z88KcCuZv1ySvE476', weeklyVisits: 3 },
+      { name: 'Preoperacional Pistola de Calor', description: 'Inspección técnica, accesorios, encendido y condiciones seguras de uso.', link: 'https://forms.gle/ktXzKeN9dc5iqssY9', weeklyVisits: 2 },
+      { name: 'Preoperacional Bisturi de Seguridad', description: 'Verificación de estado, limpieza y uso correcto del equipo de corte seguro.', link: 'https://forms.gle/6mV1j6e7YoFtmNwE8', weeklyVisits: 2 },
+      { name: 'Escaleras Marketplace', description: 'Revisión de escalas, estabilidad, acceso y condiciones antes de uso.', link: 'https://docs.google.com/forms/d/e/1FAIpQLSe8FMeEGoY0hXCra50lNAY4HuyXnVDiIYvHa17GvHa17GvSt0k8vgCw/viewform?usp=header', weeklyVisits: 2 },
+      { name: 'Preoperacional Carros MKP', description: 'Revisión de operación, estabilidad y condiciones seguras del carro MKP.', link: 'https://forms.gle/y87LNXS1ebAvX7867', weeklyVisits: 2 },
     ],
   },
   'NOTI OL': {
     icon: '📣',
     tag: 'Comunicaciones',
     status: 'Vigente',
-    summary: 'Notificaciones, alertas y mensajes operativos de seguridad relevantes.',
-    items: [
-      { title: 'Alertas', description: 'Mensajes de seguridad emitidos al personal operativo.', tone: 'warn' },
-      { title: 'Trazabilidad', description: 'Registro del envío y confirmación de lectura.', tone: 'good' },
-      { title: 'Resolución', description: 'Indicadores de cumplimiento por jornada y turno.', tone: 'info' },
+    summary: 'Canal de seguridad y OL con cápsulas tipo noticiero, recomendaciones prácticas y contenidos de sensibilización para el personal.',
+    tools: [
+      {
+        name: 'Uso de EPPS',
+        description: 'Segmento informativo sobre el uso correcto, cuidado y cumplimiento de los elementos de protección personal.',
+        link: 'https://drive.google.com/file/d/1eeys76JdD10AuprV9uRlr_ckP2OmckX1/view?usp=sharing',
+        embedUrl: 'https://drive.google.com/file/d/1eeys76JdD10AuprV9uRlr_ckP2OmckX1/preview',
+        weeklyVisits: 3,
+      },
+      {
+        name: '360° de Montacargas',
+        description: 'Video de sensibilización sobre la operación segura de montacargas y la revisión del entorno antes de avanzar.',
+        link: 'https://drive.google.com/file/d/1lRFQAPReDgEEFWly21qnMi8PJ2tOfIvk/view?usp=sharing',
+        embedUrl: 'https://drive.google.com/file/d/1lRFQAPReDgEEFWly21qnMi8PJ2tOfIvk/preview',
+        weeklyVisits: 2,
+      },
+      {
+        name: 'NOTI OL Buenas prácticas',
+        description: 'Historias, recomendaciones y mensajes clave para fortalecer la cultura de seguridad en operaciones.',
+        link: 'https://drive.google.com/file/d/1v2ufpTEl47qo4-X4Sl6Jk2PXd9cvyLnt/view?usp=sharing',
+        embedUrl: 'https://drive.google.com/file/d/1v2ufpTEl47qo4-X4Sl6Jk2PXd9cvyLnt/preview',
+        weeklyVisits: 3,
+      },
+      {
+        name: 'Revisión 360°',
+        description: 'Cápsula práctica para reforzar observación del entorno, puntos ciegos y condiciones de riesgo.',
+        link: 'https://drive.google.com/file/d/1JtadLudOJnSsWtOn56jvrtZrG0_yKRHy/view?usp=sharing',
+        embedUrl: 'https://drive.google.com/file/d/1JtadLudOJnSsWtOn56jvrtZrG0_yKRHy/preview',
+        weeklyVisits: 2,
+      },
+      {
+        name: 'Control de llaves',
+        description: 'Tema de seguridad operacional para manejo responsable de llaves, accesos y control de equipos.',
+        link: 'https://drive.google.com/file/d/1EHIQy31iLn6GDjkFE4xEhk1OAQew9YFQ/view?usp=sharing',
+        embedUrl: 'https://drive.google.com/file/d/1EHIQy31iLn6GDjkFE4xEhk1OAQew9YFQ/preview',
+        weeklyVisits: 2,
+      },
     ],
   },
   'Preguntas frecuentes': {
@@ -322,20 +357,31 @@ function getComplianceStatus(items, minimumPerWeek = 4) {
 function App() {
   const [activeModule, setActiveModule] = useState('Seguridad')
   const [activeSecuritySubmodule, setActiveSecuritySubmodule] = useState('Inicio')
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [selectedImage, setSelectedImage] = useState(null)
   const [showSecureAciView, setShowSecureAciView] = useState(false)
   const [aciAccessDenied, setAciAccessDenied] = useState(false)
   const [aciIframeBlocked, setAciIframeBlocked] = useState(false)
+  const [faqForm, setFaqForm] = useState({
+    name: '',
+    email: '',
+    area: 'Seguridad',
+    category: 'Pregunta',
+    subject: '',
+    message: '',
+  })
+  const [faqSubmitted, setFaqSubmitted] = useState(false)
   const [authUser, setAuthUser] = useState(null)
   const [authError, setAuthError] = useState('')
   const [authLoading, setAuthLoading] = useState(true)
+  const [portalAnalytics, setPortalAnalytics] = useState(null)
   const [adminUsers, setAdminUsers] = useState([])
   const [adminAuditLogs, setAdminAuditLogs] = useState([])
   const [adminNotice, setAdminNotice] = useState('')
   const [newUser, setNewUser] = useState({ email: '', name: '', role: 'viewer', status: 'active' })
   const [creatingUser, setCreatingUser] = useState(false)
   const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
-  const aciVisualUrl = 'https://sites.google.com/lis.com.co/safety-sibate/acis?output=1&widget=true'
+  const aciVisualUrl = 'https://sites.google.com/lis.com.co/safety-sibate/acis'
   const module = modules[activeModule]
   const activeSecuritySection = securitySubmodules[activeSecuritySubmodule] || securitySubmodules.Inicio
   const trainingItems = activeSecuritySubmodule === 'Capacitaciones' && activeSecuritySection.trainingGroups
@@ -349,8 +395,38 @@ function App() {
       : { value: activeSecuritySection.status, tone: 'good' }
 
   const activeRole = authUser?.role || 'viewer'
+  const currentUserAccessLevel = getRoleAccessLevel(activeRole)
   const canOpenSecureAciView = canAccessInformationLevel('confidential', activeRole)
   const canAccessAdminPanel = ['superadmin', 'admin'].includes(activeRole)
+
+  const dynamicModuleKpis = useMemo(() => {
+    if (!portalAnalytics) {
+      return module.kpis
+    }
+
+    return [
+      {
+        label: 'Usuarios activos',
+        value: `${portalAnalytics.summary.activeUsers}`,
+        meta: 'usuarios habilitados',
+      },
+      {
+        label: 'Accesos hoy',
+        value: `${portalAnalytics.summary.todayLogins}`,
+        meta: 'sesiones autenticadas',
+      },
+      {
+        label: 'Error rate',
+        value: `${portalAnalytics.summary.errorRate}%`,
+        meta: 'errores del sistema',
+      },
+      {
+        label: 'Rendimiento',
+        value: `${portalAnalytics.summary.performanceScore}%`,
+        meta: 'score general',
+      },
+    ]
+  }, [module.kpis, portalAnalytics])
 
   useEffect(() => {
     const restoreSession = async () => {
@@ -397,26 +473,31 @@ function App() {
     if (!authUser || !canAccessAdminPanel) {
       setAdminUsers([])
       setAdminAuditLogs([])
+      setPortalAnalytics(null)
       return
     }
 
     const loadAdminData = async () => {
       try {
-        const [usersResponse, auditResponse] = await Promise.all([
+        const [usersResponse, auditResponse, analyticsResponse] = await Promise.all([
           fetch(`${apiBaseUrl}/api/admin/users`, { credentials: 'include' }),
           fetch(`${apiBaseUrl}/api/admin/audit`, { credentials: 'include' }),
+          fetch(`${apiBaseUrl}/api/admin/analytics`, { credentials: 'include' }),
         ])
 
-        if (!usersResponse.ok || !auditResponse.ok) {
+        if (!usersResponse.ok || !auditResponse.ok || !analyticsResponse.ok) {
           throw new Error('No se pudo cargar la administración')
         }
 
         const usersData = await usersResponse.json()
         const auditData = await auditResponse.json()
+        const analyticsData = await analyticsResponse.json()
         setAdminUsers(usersData.users || [])
         setAdminAuditLogs(auditData.audit_logs || [])
+        setPortalAnalytics(analyticsData.analytics || null)
         setAdminNotice('')
       } catch (error) {
+        setPortalAnalytics(null)
         setAdminNotice('No se pudo cargar la información de administración.')
       }
     }
@@ -447,10 +528,11 @@ function App() {
 
     setAciAccessDenied(false)
     setAciIframeBlocked(false)
-    setShowSecureAciView(true)
+    setShowSecureAciView(false)
 
     if (typeof window !== 'undefined') {
-      window.location.hash = '#aci-visual'
+      window.open(aciVisualUrl, '_blank', 'noopener,noreferrer')
+      window.history.pushState(null, '', window.location.pathname + window.location.search)
     }
   }
 
@@ -461,6 +543,25 @@ function App() {
     if (typeof window !== 'undefined') {
       window.history.pushState(null, '', window.location.pathname + window.location.search)
     }
+  }
+
+  const handleFaqSubmit = (event) => {
+    event.preventDefault()
+
+    if (!faqForm.name.trim() || !faqForm.email.trim() || !faqForm.subject.trim() || !faqForm.message.trim()) {
+      setFaqSubmitted(false)
+      return
+    }
+
+    setFaqSubmitted(true)
+    setFaqForm({
+      name: '',
+      email: '',
+      area: 'Seguridad',
+      category: 'Pregunta',
+      subject: '',
+      message: '',
+    })
   }
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
@@ -669,13 +770,25 @@ function App() {
 
   return (
     <div className="portal-shell">
-      <aside className="sidebar">
+      <aside className={sidebarCollapsed ? 'sidebar collapsed' : 'sidebar'}>
         <div className="brand-block">
-          <img src={logoLis} alt="Logo LIS" className="brand-logo" />
-          <div className="brand-copy">
-            <strong>Portal DPO SIBATE</strong>
-            <span>Cadena de valor</span>
+          <div className="brand-row">
+            <img src={logoLis} alt="Logo LIS" className="brand-logo" />
+            <button
+              type="button"
+              className="sidebar-toggle"
+              onClick={() => setSidebarCollapsed((current) => !current)}
+              aria-label={sidebarCollapsed ? 'Expandir sidebar' : 'Contraer sidebar'}
+            >
+              {sidebarCollapsed ? '›' : '‹'}
+            </button>
           </div>
+          {!sidebarCollapsed ? (
+            <div className="brand-copy">
+              <strong>Portal DPO SIBATE</strong>
+              <span>Cadena de valor</span>
+            </div>
+          ) : null}
         </div>
 
         <nav className="nav-panel" aria-label="Módulos del portal">
@@ -687,15 +800,21 @@ function App() {
               onClick={() => setActiveModule(name)}
             >
               <span className="nav-icon">{name === 'Seguridad' ? '🛡️' : name === 'Flota' ? '🚚' : '✅'}</span>
-              {name}
+              {!sidebarCollapsed ? <span className="nav-text">{name}</span> : null}
             </button>
           ))}
         </nav>
 
-        <div className="sidebar-card">
-          <p>Semana operativa</p>
-          <strong>08 / 52</strong>
-          <small>Meta de cumplimiento: 95%</small>
+        <div className={sidebarCollapsed ? 'sidebar-card collapsed' : 'sidebar-card'}>
+          {!sidebarCollapsed ? (
+            <>
+              <p>Semana operativa</p>
+              <strong>08 / 52</strong>
+              <small>Meta de cumplimiento: 95%</small>
+            </>
+          ) : (
+            <strong>08</strong>
+          )}
         </div>
       </aside>
 
@@ -755,6 +874,67 @@ function App() {
                   </div>
                   <button type="button" className="primary-button" onClick={refreshAdminData}>Actualizar</button>
                 </div>
+
+                {portalAnalytics ? (
+                  <>
+                    <div className="admin-analytics-grid">
+                      <article className="stat-card compact">
+                        <span>Usuarios activos</span>
+                        <strong>{portalAnalytics.summary.activeUsers}</strong>
+                        <small>activos hoy</small>
+                      </article>
+                      <article className="stat-card compact">
+                        <span>Sesiones</span>
+                        <strong>{portalAnalytics.summary.totalSessions}</strong>
+                        <small>autenticaciones</small>
+                      </article>
+                      <article className="stat-card compact">
+                        <span>Rendimiento</span>
+                        <strong>{portalAnalytics.summary.performanceScore}%</strong>
+                        <small>score general</small>
+                      </article>
+                      <article className="stat-card compact">
+                        <span>Error rate</span>
+                        <strong>{portalAnalytics.summary.errorRate}%</strong>
+                        <small>fallos del sistema</small>
+                      </article>
+                    </div>
+
+                    <div className="admin-analytics-chart panel-card">
+                      <div className="panel-header">
+                        <h3>Uso por día</h3>
+                        <span className="admin-chart-caption">Últimos 7 días</span>
+                      </div>
+
+                      <div className="admin-chart-grid">
+                        {(portalAnalytics.usageByDay || []).map((day) => {
+                          const maxSessions = Math.max(
+                            1,
+                            ...(portalAnalytics.usageByDay || []).map((item) => Number(item.sessions) || 0),
+                          )
+                          const barHeight = Math.max(18, ((Number(day.sessions) || 0) / maxSessions) * 100)
+
+                          return (
+                            <div key={day.date} className="admin-chart-bar-group" title={`${day.sessions} sesiones • ${day.users} usuarios`}>
+                              <span className="admin-chart-value">{day.sessions}</span>
+                              <div className="admin-chart-bar-shell">
+                                <div className="admin-chart-bar" style={{ height: `${barHeight}%` }} />
+                              </div>
+                              <span className="admin-chart-date">
+                                {new Date(day.date).toLocaleDateString('es-ES', { month: 'short', day: 'numeric' })}
+                              </span>
+                            </div>
+                          )
+                        })}
+                      </div>
+
+                      <div className="admin-chart-legend">
+                        <span><i className="admin-chart-dot blue" />Usuarios activos</span>
+                        <span><i className="admin-chart-dot red" />Sesiones autenticadas</span>
+                      </div>
+                    </div>
+                  </>
+                ) : null}
 
                 {adminNotice ? <div className="admin-notice">{adminNotice}</div> : null}
 
@@ -990,7 +1170,7 @@ function App() {
                       <strong>{activeSecuritySection.policyNote}</strong>
                     </div>
                     <div className="aci-visual-actions">
-                      <span className="security-tier-badge">Nivel de acceso: {userAccessLevel}</span>
+                      <span className="security-tier-badge">Nivel de acceso: {currentUserAccessLevel}</span>
                       <button type="button" className="secure-visual-button" onClick={openSecureAciView}>
                         Ver visual autorizada
                       </button>
@@ -1066,23 +1246,55 @@ function App() {
               ) : null}
 
               {activeSecuritySection.tools ? (
-                <div className="inspection-tools-grid">
-                  {activeSecuritySection.tools.map((tool) => (
-                    <a
-                      key={tool.name}
-                      href={tool.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inspection-tool-card"
-                    >
-                      <div className="inspection-tool-icon" aria-hidden="true">🧰</div>
-                      <div className="inspection-tool-copy">
-                        <strong>{tool.name}</strong>
-                        <p>{tool.description}</p>
-                      </div>
-                      <span className="inspection-tool-action">Abrir</span>
-                    </a>
-                  ))}
+                <div className={activeSecuritySubmodule === 'NOTI OL' ? 'notiol-video-grid' : 'inspection-tools-grid'}>
+                  {activeSecuritySection.tools.map((tool) => {
+                    if (activeSecuritySubmodule === 'NOTI OL') {
+                      return (
+                        <article key={tool.name} className="notiol-video-card">
+                          <div className="notiol-video-header">
+                            <div className="inspection-tool-icon" aria-hidden="true">🎬</div>
+                            <div className="inspection-tool-copy">
+                              <strong>{tool.name}</strong>
+                              <p>{tool.description}</p>
+                            </div>
+                          </div>
+
+                          <div className="notiol-video-frame-wrap">
+                            <iframe
+                              className="notiol-video-frame"
+                              src={tool.embedUrl || tool.link}
+                              title={tool.name}
+                              loading="lazy"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              referrerPolicy="strict-origin-when-cross-origin"
+                              allowFullScreen
+                            />
+                          </div>
+
+                          <a href={tool.link} target="_blank" rel="noreferrer" className="notiol-video-link">
+                            Abrir video
+                          </a>
+                        </article>
+                      )
+                    }
+
+                    return (
+                      <a
+                        key={tool.name}
+                        href={tool.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inspection-tool-card"
+                      >
+                        <div className="inspection-tool-icon" aria-hidden="true">🧰</div>
+                        <div className="inspection-tool-copy">
+                          <strong>{tool.name}</strong>
+                          <p>{tool.description}</p>
+                        </div>
+                        <span className="inspection-tool-action">Abrir</span>
+                      </a>
+                    )
+                  })}
                 </div>
               ) : null}
 
@@ -1114,7 +1326,104 @@ function App() {
                 </div>
               ) : null}
 
-              {!activeSecuritySection.gallery && !activeSecuritySection.tools && !activeSecuritySection.trainingGroups ? (
+              {activeSecuritySubmodule === 'Preguntas frecuentes' ? (
+                <div className="faq-form-panel">
+                  <div className="faq-header-row">
+                    <div>
+                      <p className="eyebrow accent">Buzón interno</p>
+                      <h4>Consulta al área de seguridad</h4>
+                    </div>
+                    <span className="faq-badge">Respuesta en 48 horas</span>
+                  </div>
+
+                  <form className="faq-form" onSubmit={handleFaqSubmit}>
+                    <div className="faq-grid">
+                      <label className="faq-field">
+                        <span>Nombre</span>
+                        <input
+                          type="text"
+                          value={faqForm.name}
+                          onChange={(event) => setFaqForm((current) => ({ ...current, name: event.target.value }))}
+                          placeholder="Tu nombre"
+                          required
+                        />
+                      </label>
+
+                      <label className="faq-field">
+                        <span>Correo</span>
+                        <input
+                          type="email"
+                          value={faqForm.email}
+                          onChange={(event) => setFaqForm((current) => ({ ...current, email: event.target.value }))}
+                          placeholder="usuario@lis.com.co"
+                          required
+                        />
+                      </label>
+
+                      <label className="faq-field">
+                        <span>Área</span>
+                        <select
+                          value={faqForm.area}
+                          onChange={(event) => setFaqForm((current) => ({ ...current, area: event.target.value }))}
+                        >
+                          <option value="Seguridad">Seguridad</option>
+                          <option value="Operación">Operación</option>
+                          <option value="Calidad">Calidad</option>
+                          <option value="Flota">Flota</option>
+                          <option value="Administración">Administración</option>
+                        </select>
+                      </label>
+
+                      <label className="faq-field">
+                        <span>Tipo</span>
+                        <select
+                          value={faqForm.category}
+                          onChange={(event) => setFaqForm((current) => ({ ...current, category: event.target.value }))}
+                        >
+                          <option value="Pregunta">Pregunta</option>
+                          <option value="Sugerencia">Sugerencia</option>
+                          <option value="Reporte">Reporte</option>
+                          <option value="Incidente">Incidente</option>
+                        </select>
+                      </label>
+                    </div>
+
+                    <label className="faq-field full-width">
+                      <span>Asunto</span>
+                      <input
+                        type="text"
+                        value={faqForm.subject}
+                        onChange={(event) => setFaqForm((current) => ({ ...current, subject: event.target.value }))}
+                        placeholder="Escribe el asunto o la duda principal"
+                        required
+                      />
+                    </label>
+
+                    <label className="faq-field full-width">
+                      <span>Mensaje</span>
+                      <textarea
+                        rows="6"
+                        value={faqForm.message}
+                        onChange={(event) => setFaqForm((current) => ({ ...current, message: event.target.value }))}
+                        placeholder="Describe tu consulta, observación o recomendación para seguridad..."
+                        required
+                      />
+                    </label>
+
+                    <div className="faq-form-actions">
+                      <button type="submit" className="primary-button">Enviar consulta</button>
+                    </div>
+
+                    {faqSubmitted ? (
+                      <div className="faq-success" role="status">
+                        Consulta enviada correctamente. El área de seguridad revisará tu mensaje.
+                      </div>
+                    ) : null}
+                  </form>
+                </div>
+              ) : null}
+
+              {!activeSecuritySection.gallery && !activeSecuritySection.tools && !activeSecuritySection.trainingGroups && activeSecuritySubmodule !== 'Preguntas frecuentes' ? (
                 <div className="security-submodule-grid">
                   {activeSecuritySection.items.map((item) => (
                     <article key={item.title} className={`security-submodule-card ${item.tone}`}>
@@ -1214,6 +1523,10 @@ function App() {
             </section>
           </>
         ) : null}
+
+        <footer className="portal-footer">
+          © Logistica Inteligente Solution 2026. Todos los derechos reservados.
+        </footer>
       </main>
 
       {showSecureAciView ? (
@@ -1234,9 +1547,9 @@ function App() {
                 <div className="secure-page-fallback">
                   <div className="secure-page-warning">🔒</div>
                   <h4>Acceso autorizado requerido</h4>
-                  <p>La visual oficial de ACIS está protegida por la política de seguridad de la información. Para continuar, abra la vista autorizada en una ventana segura.</p>
+                  <p>Google Sites bloquea la incrustación directa por política del proveedor. La página completa de ACIs se abre en una pestaña segura para visualizarla sin restricciones.</p>
                   <a href={aciVisualUrl} target="_blank" rel="noreferrer" className="secure-visual-link">
-                    Abrir visual autorizada
+                    Abrir página completa de ACIs
                   </a>
                 </div>
               ) : (
@@ -1246,6 +1559,7 @@ function App() {
                   title="Visual autorizada de ACIS"
                   loading="lazy"
                   referrerPolicy="strict-origin-when-cross-origin"
+                  allow="fullscreen"
                   onError={() => setAciIframeBlocked(true)}
                 />
               )}

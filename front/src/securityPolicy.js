@@ -10,9 +10,10 @@ export const roleAccessMap = {
   acis: 'confidential',
   seguridad: 'confidential',
   admin: 'restricted',
+  superadmin: 'restricted',
 }
 
-export const userAccessLevel = 'viewer'
+export const userAccessLevel = 'restricted'
 
 export const getRoleAccessLevel = (role = 'viewer') => roleAccessMap[role] || 'internal'
 
