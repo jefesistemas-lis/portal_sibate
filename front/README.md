@@ -2,17 +2,17 @@
 
 ## Estructura
 
-- front/: aplicaciÃ³n React + Vite
-- back/: API base en Node.js con Express
+- frontend/: aplicación React + Vite
+- backend/: API base en Node.js con Express
 
 ## Ejecutar
 
 ```bash
-cd front
+cd frontend
 npm install
 npm run dev
 
-cd ../back
+cd ../backend
 npm install
 npm run dev
 ```

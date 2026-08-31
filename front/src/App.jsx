@@ -4,31 +4,38 @@ import './App.css'
 const modules = {
   Seguridad: {
     label: 'Seguridad',
-    status: 'Operación estable',
+    status: 'Más seguros',
     summary:
-      'Monitoreo de protocolos, capacitaciones y gestión de riesgos para mantener la operación segura y conforme.',
+      'Promover el bienestar y prevenir la fatiga mediante la realización de pausas activas durante la jornada laboral.',
+    ctaLabel: 'Pausas Activas',
+    ctaLink: 'https://forms.gle/cLoHphWkJS8G1UUn9',
+    featureCards: [
+      { title: 'Pausas Activas', text: 'Fortaleciendo bienestar y prevención de fatiga.', icon: '⏱️', link: 'https://forms.gle/cLoHphWkJS8G1UUn9' },
+      { title: 'Capacitaciones', text: 'Entrenamiento en seguridad, ergonomía y hábitos saludables.', icon: '🎓', link: '#' },
+      { title: 'Reporte', text: 'Seguimiento de eventos, observaciones y acciones correctivas.', icon: '📊', link: '#' },
+    ],
     kpis: [
-      { label: 'Cumplimiento', value: '96%', meta: '+4% vs. mes anterior' },
-      { label: 'Capacitaciones', value: '18', meta: '3 pendientes' },
-      { label: 'Incidentes', value: '02', meta: 'Sin gravedad alta' },
-      { label: 'Auditorías', value: '6/7', meta: '1 programada' },
+      { label: 'Pausas activas', value: '100%', meta: 'Programación vigente' },
+      { label: 'Capacitaciones', value: '12', meta: '4 en agenda' },
+      { label: 'Reporte de riesgos', value: '08', meta: '2 priorizados' },
+      { label: 'Inspecciones', value: '24', meta: 'Sin hallazgos críticos' },
     ],
     highlights: [
-      { title: 'Revisión de EPP', detail: '100% de equipos con inspección vigente.', tone: 'good' },
-      { title: 'Riesgo de SSO', detail: 'Se requieren 2 indicadores críticos para cierre.', tone: 'warn' },
-      { title: 'Entrega de brigadas', detail: 'Plan de respuesta activado en 3 turnos.', tone: 'good' },
+      { title: 'Bienestar laboral', detail: 'Se promueve la actividad física y la recuperación durante la jornada.', tone: 'good' },
+      { title: 'Prevención de fatiga', detail: 'Se fortalecen pausas activas y monitoreo del esfuerzo físico.', tone: 'warn' },
+      { title: 'Control operativo', detail: 'Seguimiento de riesgos, observaciones y acciones inmediatas.', tone: 'good' },
     ],
-    listTitle: 'Seguimiento operativo',
+    listTitle: 'Seguimiento de seguridad',
     list: [
-      { item: 'Inspección de estaciones de trabajo', result: 'OK' },
-      { item: 'Control de accesos a zonas restringidas', result: 'OK' },
-      { item: 'Capacitación en ergonomía', result: 'En curso' },
-      { item: 'Reporte de incidentes mensuales', result: 'Sin novedades' },
+      { item: 'Pausas activas programadas', result: 'OK' },
+      { item: 'Capacitación en bienestar', result: 'En curso' },
+      { item: 'Inspección de áreas críticas', result: 'OK' },
+      { item: 'Reporte de condiciones de trabajo', result: 'Sin novedades' },
     ],
     actions: [
-      'Confirmar cumplimiento de checklist semanal en todas las áreas.',
-      'Programar auditoría de seguridad para el próximo viernes.',
-      'Cierre del plan de acción de riesgo SSO antes del 12 de septiembre.',
+      'Programar las pausas activas por turno y validar participación.',
+      'Reforzar la capacitación en prevención de fatiga y ergonomía.',
+      'Actualizar el seguimiento de riesgos y observaciones en tiempo real.',
     ],
   },
   Flota: {
@@ -148,6 +155,16 @@ function App() {
             <p className="eyebrow accent">Módulo activo</p>
             <h2>{module.label}</h2>
             <p>{module.summary}</p>
+            {module.ctaLink ? (
+              <a
+                href={module.ctaLink}
+                target="_blank"
+                rel="noreferrer"
+                className="cta-link"
+              >
+                {module.ctaLabel}
+              </a>
+            ) : null}
           </div>
 
           <div className="hero-status">
@@ -155,6 +172,26 @@ function App() {
             <strong>{module.status}</strong>
           </div>
         </section>
+
+        {activeModule === 'Seguridad' && module.featureCards ? (
+          <section className="safety-feature-strip">
+            {module.featureCards.map((card) => (
+              <a
+                key={card.title}
+                href={card.link}
+                target={card.link.startsWith('http') ? '_blank' : undefined}
+                rel={card.link.startsWith('http') ? 'noreferrer' : undefined}
+                className="feature-card"
+              >
+                <div className="feature-icon">{card.icon}</div>
+                <div>
+                  <strong>{card.title}</strong>
+                  <p>{card.text}</p>
+                </div>
+              </a>
+            ))}
+          </section>
+        ) : null}
 
         <section className="stats-grid">
           {module.kpis.map((item) => (
