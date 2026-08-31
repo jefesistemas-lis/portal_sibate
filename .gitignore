@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+back/.env
+front/.env
+.vite/
+dist/
+coverage/
+.DS_Store

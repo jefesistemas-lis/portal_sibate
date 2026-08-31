@@ -1,0 +1,64 @@
+{
+  "users": [
+    {
+      "email": "jefesistemas@lis.com.co",
+      "name": "Jefe Sistemas LIS",
+      "role": "superadmin",
+      "status": "active",
+      "permissions": [
+        "manage_users",
+        "manage_roles",
+        "view_audit",
+        "view_security",
+        "view_acis",
+        "manage_inspections",
+        "manage_training"
+      ],
+      "created_at": "2026-08-31T19:20:04.841Z",
+      "updated_at": "2026-08-31T19:20:10.806Z",
+      "last_login": null,
+      "picture": ""
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "log-1788204010812-e8b55f",
+      "email": "jefesistemas@lis.com.co",
+      "action": "login_success",
+      "module": "auth",
+      "details": {
+        "role": "superadmin"
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      "created_at": "2026-08-31T19:20:10.812Z"
+    },
+    {
+      "id": "log-1788204004844-152477",
+      "email": "user",
+      "action": "logout",
+      "module": "auth",
+      "details": {
+        "message": "Sesión cerrada"
+      },
+      "success": true,
+      "ip_address": "unknown",
+      "user_agent": "system",
+      "created_at": "2026-08-31T19:20:04.844Z"
+    },
+    {
+      "id": "seed-boot",
+      "email": "system",
+      "action": "system_initialized",
+      "module": "core",
+      "details": {
+        "message": "Sistema de permisos y auditoría inicializado."
+      },
+      "success": true,
+      "ip_address": "127.0.0.1",
+      "user_agent": "system",
+      "created_at": "2026-08-31T19:20:04.841Z"
+    }
+  ]
+}
