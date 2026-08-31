@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import logoLis from '../img/logo-lis-footer.png'
 
 const modules = {
   Seguridad: {
@@ -106,10 +107,10 @@ function App() {
     <div className="portal-shell">
       <aside className="sidebar">
         <div className="brand-block">
-          <div className="brand-mark">CD</div>
-          <div>
-            <strong>CD Sibate</strong>
-            <span>Portal DPO</span>
+          <img src={logoLis} alt="Logo LIS" className="brand-logo" />
+          <div className="brand-copy">
+            <strong>Portal DPO</strong>
+            <span>Cadena de valor</span>
           </div>
         </div>
 
