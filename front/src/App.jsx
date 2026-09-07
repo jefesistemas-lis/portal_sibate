@@ -205,6 +205,171 @@ const securitySubmodules = {
   },
 }
 
+const flotaSubmodules = {
+  Inicio: {
+    icon: '🏠',
+    tag: 'Centro de flota',
+    status: 'Activo',
+    summary: 'Espacio central para consultar la operación, seguridad y confiabilidad de los equipos de flota Sibaté.',
+    items: [
+      { title: 'Operación segura', description: 'Consulta los estándares, políticas y recursos para operar equipos móviles de forma segura.', tone: 'good' },
+      { title: 'Confiabilidad', description: 'Gestiona repuestos, mantenimiento y evidencias para reducir paradas de los equipos.', tone: 'info' },
+      { title: 'Desempeño', description: 'Revisa indicadores de checklist, consumo de GLP y novedades de la operación.', tone: 'warn' },
+    ],
+  },
+  Mejoras: {
+    icon: '🔧',
+    tag: 'Mejoramiento',
+    status: '2026',
+    summary: 'Seguimiento de mejoras y renovación de equipos para fortalecer la capacidad operativa de la flota.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/mejoras',
+    items: [
+      { title: 'Equipos nuevos', description: 'Registro visual y seguimiento de las incorporaciones y mejoras realizadas durante 2026.', tone: 'good' },
+      { title: 'Evidencias de mejora', description: 'Documenta avances, cambios implementados y resultados obtenidos en la operación.', tone: 'info' },
+    ],
+  },
+  Compliance: {
+    icon: '📋',
+    tag: 'Cumplimiento',
+    status: 'Control',
+    summary: 'Políticas y herramientas para verificar que cada equipo cumpla las condiciones de seguridad antes de operar.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/compliance',
+    tools: [
+      { name: 'Checklist preoperacional', description: 'Revisión punto a punto del equipo antes de iniciar la operación.', link: 'https://www.geomov.com/smartlauncher/' },
+      { name: 'Manejo defensivo', description: 'Buenas prácticas para prevenir incidentes durante la conducción y maniobra.' },
+      { name: 'Política de documentos', description: 'Reglas para crear, proteger, almacenar y compartir documentos de flota.' },
+      { name: 'Estándar de flota', description: 'Criterios de uniformidad, seguridad, eficiencia y control de equipos móviles.' },
+    ],
+  },
+  'Confiabilidad de la flota': {
+    icon: '🛠️',
+    tag: 'Mantenimiento',
+    status: 'Continuidad',
+    summary: 'Gestión de repuestos y evidencias para mantener los equipos disponibles y confiables.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/confiabilidad-de-la-flota',
+    items: [
+      { title: 'Política de repuestos', description: 'Reglas para seleccionar, adquirir, almacenar, usar y controlar repuestos de montacargas.', tone: 'good' },
+      { title: 'Evidencias', description: 'Consulta soportes visuales y registros asociados al mantenimiento y la confiabilidad.', tone: 'info' },
+    ],
+    resource: { label: 'Documentos de repuestos', link: 'https://drive.google.com/drive/folders/19-y1HNE2506NLUJpHRz35Y7Sokx0K1qi?usp=drive_link' },
+  },
+  'Gestión de flota': {
+    icon: '⛽',
+    tag: 'Administración operativa',
+    status: 'En control',
+    summary: 'Políticas para administrar recursos críticos de la flota y proteger la disponibilidad de los equipos.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/gesti%C3%B3n-de-flota',
+    items: [
+      { title: 'Política de combustible', description: 'Controla el suministro, uso, registro y consumo para evitar desperdicios y sobrecostos.', tone: 'good' },
+      { title: 'Política de llantas', description: 'Define selección, mantenimiento, rotación, almacenamiento y reemplazo de llantas.', tone: 'warn' },
+    ],
+    resource: { label: 'Archivos de gestión', link: 'https://drive.google.com/drive/folders/1dBkWDnccReq6YD-q0VzTUodhemJciEti?usp=drive_link' },
+  },
+  Capacitaciones: {
+    icon: '🎓',
+    tag: 'Formación',
+    status: 'Disponible',
+    summary: 'Acceso a los formularios de formación y validación de conocimientos para la operación de flota.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/capacitaciones',
+    tools: [
+      { name: 'Documentos', description: 'Formulario para consultar y validar conocimientos documentales de flota.', link: 'https://forms.office.com/r/bysiSW9B8E' },
+      { name: 'Checklist', description: 'Formulario de aprendizaje y verificación de la lista de chequeo preoperacional.', link: 'https://forms.office.com/r/vKF5cJE8Qh' },
+    ],
+  },
+  Escuela: {
+    icon: '🚜',
+    tag: 'Escuela de pilotos',
+    status: 'Formación',
+    summary: 'Cápsulas y recursos prácticos para reforzar las maniobras esenciales de los operadores.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/pres',
+    items: [
+      { title: 'Mínimos vitales', description: 'Puntos de apoyo, cinturón, pito y frenos: controles esenciales antes de operar.', tone: 'good' },
+      { title: 'Cambio GLP', description: 'Recomendaciones para realizar el cambio de GLP de forma correcta y segura.', tone: 'info' },
+      { title: 'Pare y pite', description: 'Refuerzo de la señalización y comunicación durante las maniobras.', tone: 'warn' },
+      { title: 'Manejo seguro', description: 'Buenas prácticas para proteger al operador, al equipo y al entorno.', tone: 'good' },
+      { title: 'FMS y telemetrías', description: 'Consulta de recursos asociados al seguimiento tecnológico de la flota.', tone: 'info' },
+    ],
+  },
+  Indicadores: {
+    icon: '📊',
+    tag: 'Rendimiento',
+    status: 'Seguimiento',
+    summary: 'Indicadores clave para observar el comportamiento de la flota y priorizar acciones de mejora.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/indicadores',
+    items: [
+      { title: 'Checklist', description: 'Cumplimiento y resultados de las verificaciones preoperacionales.', tone: 'good' },
+      { title: 'Consumo GLP', description: 'Seguimiento del consumo para detectar oportunidades de eficiencia.', tone: 'info' },
+      { title: 'Novedades', description: 'Registro de eventos, fallas y situaciones que requieren atención.', tone: 'warn' },
+    ],
+  },
+  Equipo: {
+    icon: '👥',
+    tag: 'Personas',
+    status: 'Conócenos',
+    summary: 'Información del equipo de flota y de los operadores que hacen posible una operación segura.',
+    source: 'https://sites.google.com/lis.com.co/cdsibateflt/equipo',
+    items: [
+      { title: 'Equipos', description: 'Conoce la estructura de trabajo y los responsables de la gestión de flota.', tone: 'info' },
+      { title: 'Operadores', description: 'Identifica a los operadores y fortalece el reconocimiento del equipo en operación.', tone: 'good' },
+      { title: 'Contacto', description: 'Canal de coordinación: liderflt.sibate@lis.com.co', tone: 'warn' },
+    ],
+  },
+}
+
+const calidadSubmodules = {
+  Inicio: {
+    icon: '🏠',
+    tag: 'Warehouse · CD Sibaté',
+    status: 'Activo',
+    summary: 'Centro de consulta para la formación DPO, la excelencia operacional y los estándares de calidad del centro de distribución.',
+    source: 'https://sites.google.com/lis.com.co/warehouse/inicio',
+    items: [
+      { title: 'Camino a la excelencia', description: 'Conoce la ruta de formación y los bloques que estructuran la operación del centro de distribución.', tone: 'good' },
+      { title: 'Calidad operacional', description: 'Refuerza los criterios de trabajo estandarizado, control y mejora continua.', tone: 'info' },
+      { title: 'Material de consulta', description: 'Accede a los recursos de capacitación y documentos definidos para Warehouse.', tone: 'warn' },
+    ],
+  },
+  'Bloques DPO': {
+    icon: '🧱',
+    tag: 'DPO · Formación',
+    status: '6 bloques',
+    summary: 'Ruta de aprendizaje DPO organizada por los procesos principales del centro de distribución.',
+    source: 'https://sites.google.com/lis.com.co/warehouse/bloques',
+    items: [
+      { title: 'Bloque 1 · Layout & capacidad', description: 'Distribución, capacidad y organización del espacio operativo.', tone: 'good' },
+      { title: 'Bloque 2 · Calidad', description: 'Estándares y prácticas de calidad para asegurar la excelencia del proceso.', tone: 'info' },
+      { title: 'Bloque 3 · Gestión de inventarios', description: 'Control y confiabilidad de las existencias en el centro de distribución.', tone: 'warn' },
+      { title: 'Bloque 4 · Picking', description: 'Buenas prácticas para preparar pedidos con precisión y productividad.', tone: 'good' },
+      { title: 'Bloque 5 · Cargue y descargue', description: 'Lineamientos para mover producto de forma segura y eficiente.', tone: 'info' },
+      { title: 'Bloque 6 · Reabastecimiento', description: 'Principios para mantener el flujo de producto y la disponibilidad operativa.', tone: 'warn' },
+    ],
+  },
+  Calidad: {
+    icon: '✅',
+    tag: 'Bloque 2 · DPO',
+    status: 'Prioritario',
+    summary: 'Submódulo dedicado al bloque de Calidad dentro del camino a la excelencia de Warehouse.',
+    source: 'https://www.google.com/url?q=https%3A%2F%2Fanheuserbuschinbev-my.sharepoint.com%2F%3Af%3A%2Fr%2Fpersonal%2Fjeferson_pulido_p_gmodelo_com_mx%2FDocuments%2FDPO%2F2025%2FDPO%25202025%2520CAMINO%2520A%2520LA%2520EXCELENCIA%2FBLOQUE%25202%2520-%2520CALIDAD%3Fcsf%3D1%26web%3D1%26e%3DZQUd4A',
+    items: [
+      { title: 'Estándares de calidad', description: 'Consulta los criterios que sostienen la excelencia operacional en el centro de distribución.', tone: 'good' },
+      { title: 'Formación DPO', description: 'Material de aprendizaje asociado al Bloque 2 - Calidad.', tone: 'info' },
+      { title: 'Mejora continua', description: 'Identifica oportunidades, controla desviaciones y fortalece la disciplina operativa.', tone: 'warn' },
+    ],
+  },
+  Capacitaciones: {
+    icon: '🎓',
+    tag: 'Entrenamiento',
+    status: 'Disponible',
+    summary: 'Acceso a las capacitaciones y formularios publicados para el equipo de Warehouse.',
+    source: 'https://sites.google.com/lis.com.co/warehouse/capacitaciones',
+    items: [
+      { title: 'Capacitaciones DPO', description: 'Consulta los contenidos de formación para avanzar en el camino a la excelencia.', tone: 'good' },
+      { title: 'Evaluación y seguimiento', description: 'Usa los formularios disponibles para validar conocimientos y participación.', tone: 'info' },
+      { title: 'Materiales del CD Sibaté', description: 'Reúne en un solo lugar los recursos de apoyo publicados por Warehouse.', tone: 'warn' },
+    ],
+  },
+}
+
 const modules = {
   Seguridad: {
     label: 'Seguridad',
@@ -300,6 +465,36 @@ const modules = {
       'Socializar resultados del taller de calidad con líderes de turno.',
     ],
   },
+  Almacén: {
+    label: 'Almacén',
+    status: 'WarePro disponible',
+    summary: 'Acceso directo a WarePro para gestionar la operación, inventarios y procesos del almacén.',
+    ctaLabel: 'Ingresar a WarePro',
+    ctaLink: 'https://warepro.lis.com.co/',
+    kpis: [
+      { label: 'Plataforma', value: 'WarePro', meta: 'Acceso operativo' },
+      { label: 'Estado', value: 'OK', meta: 'Servicio disponible' },
+      { label: 'Operación', value: 'CD', meta: 'Gestión de almacén' },
+      { label: 'Acceso', value: 'WEB', meta: 'Portal institucional' },
+    ],
+    highlights: [
+      { title: 'Gestión centralizada', detail: 'Consulta y administra los procesos del almacén desde WarePro.', tone: 'good' },
+      { title: 'Operación conectada', detail: 'Accede al sistema institucional con tus credenciales autorizadas.', tone: 'info' },
+      { title: 'Acceso rápido', detail: 'El botón principal abre WarePro en una nueva pestaña.', tone: 'warn' },
+    ],
+    listTitle: 'Acceso a la operación',
+    list: [
+      { item: 'Portal WarePro', result: 'Disponible' },
+      { item: 'Gestión de almacén', result: 'En línea' },
+      { item: 'Inventarios', result: 'Consultar' },
+      { item: 'Procesos operativos', result: 'Consultar' },
+    ],
+    actions: [
+      'Ingresar a WarePro para consultar o gestionar la operación del almacén.',
+      'Validar que tu usuario institucional tenga los permisos necesarios.',
+      'Reportar cualquier novedad de acceso al responsable del proceso.',
+    ],
+  },
   Administración: {
     label: 'Administración',
     status: 'Control central',
@@ -357,6 +552,8 @@ function getComplianceStatus(items, minimumPerWeek = 4) {
 function App() {
   const [activeModule, setActiveModule] = useState('Seguridad')
   const [activeSecuritySubmodule, setActiveSecuritySubmodule] = useState('Inicio')
+  const [activeFlotaSubmodule, setActiveFlotaSubmodule] = useState('Inicio')
+  const [activeCalidadSubmodule, setActiveCalidadSubmodule] = useState('Inicio')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [selectedImage, setSelectedImage] = useState(null)
   const [showSecureAciView, setShowSecureAciView] = useState(false)
@@ -384,6 +581,8 @@ function App() {
   const aciVisualUrl = 'https://sites.google.com/lis.com.co/safety-sibate/acis'
   const module = modules[activeModule]
   const activeSecuritySection = securitySubmodules[activeSecuritySubmodule] || securitySubmodules.Inicio
+  const activeFlotaSection = flotaSubmodules[activeFlotaSubmodule] || flotaSubmodules.Inicio
+  const activeCalidadSection = calidadSubmodules[activeCalidadSubmodule] || calidadSubmodules.Inicio
   const trainingItems = activeSecuritySubmodule === 'Capacitaciones' && activeSecuritySection.trainingGroups
     ? activeSecuritySection.trainingGroups.flatMap((group) => group.items)
     : []
@@ -744,22 +943,18 @@ function App() {
             <h2>Ingresar con Google Workspace</h2>
             <p>Solo usuarios con credenciales del dominio <strong>lis.com.co</strong> pueden acceder.</p>
 
-            <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
-              onError={handleGoogleLoginError}
-              useOneTap
-              render={({ onClick, disabled }) => (
-                <button
-                  type="button"
-                  className="google-login-button"
-                  onClick={onClick}
-                  disabled={disabled}
-                >
-                  <span className="google-g-mark" aria-hidden="true">G</span>
-                  <span>Acceder con Google</span>
-                </button>
-              )}
-            />
+            <div className="google-login-slot">
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+                useOneTap
+                theme="outline"
+                size="large"
+                text="signin_with"
+                shape="rectangular"
+                width="360"
+              />
+            </div>
 
             {authError ? <div className="login-error">{authError}</div> : null}
           </div>
@@ -799,7 +994,7 @@ function App() {
               className={name === activeModule ? 'nav-item active' : 'nav-item'}
               onClick={() => setActiveModule(name)}
             >
-              <span className="nav-icon">{name === 'Seguridad' ? '🛡️' : name === 'Flota' ? '🚚' : '✅'}</span>
+              <span className="nav-icon">{name === 'Seguridad' ? '🛡️' : name === 'Flota' ? '🚚' : name === 'Almacén' ? '📦' : '✅'}</span>
               {!sidebarCollapsed ? <span className="nav-text">{name}</span> : null}
             </button>
           ))}
@@ -1436,6 +1631,133 @@ function App() {
                   ))}
                 </div>
               ) : null}
+            </div>
+          </section>
+        ) : activeModule === 'Flota' ? (
+          <section className="security-submodule-panel flota-submodule-panel">
+            <aside className="security-submodule-sidebar">
+              <div className="security-submodule-header-block">
+                <span className="security-submodule-label">Submódulos</span>
+              </div>
+
+              {Object.keys(flotaSubmodules).map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  className={name === activeFlotaSubmodule ? 'security-submodule-item active' : 'security-submodule-item'}
+                  onClick={() => setActiveFlotaSubmodule(name)}
+                >
+                  <span className="security-submodule-icon" aria-hidden="true">{flotaSubmodules[name].icon}</span>
+                  <span>{name}</span>
+                </button>
+              ))}
+            </aside>
+
+            <div className="security-submodule-content">
+              <div className="security-submodule-topbar">
+                <div>
+                  <p className="eyebrow accent">{activeFlotaSection.tag}</p>
+                  <h3>{activeFlotaSubmodule}</h3>
+                </div>
+                <span className="security-status-pill good">{activeFlotaSection.status}</span>
+              </div>
+
+              <p className="security-submodule-summary">{activeFlotaSection.summary}</p>
+
+              <div className="security-policy-banner flota-source-banner">
+                <strong>Referencia:</strong>
+                <a href={activeFlotaSection.source || 'https://sites.google.com/lis.com.co/cdsibateflt/inicio'} target="_blank" rel="noreferrer">
+                  Ver contenido original de Flota Sibaté
+                </a>
+              </div>
+
+              {activeFlotaSection.tools ? (
+                <div className="inspection-tools-grid">
+                  {activeFlotaSection.tools.map((tool) => (
+                    <article key={tool.name} className="inspection-tool-card flota-resource-card">
+                      <div className="inspection-tool-icon" aria-hidden="true">📘</div>
+                      <div className="inspection-tool-copy">
+                        <strong>{tool.name}</strong>
+                        <p>{tool.description}</p>
+                      </div>
+                      {tool.link ? (
+                        <a href={tool.link} target="_blank" rel="noreferrer" className="inspection-tool-action">Abrir</a>
+                      ) : <span className="inspection-tool-action">Consultar</span>}
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+
+              {activeFlotaSection.items ? (
+                <div className="security-submodule-grid flota-submodule-grid">
+                  {activeFlotaSection.items.map((item) => (
+                    <article key={item.title} className={`security-submodule-card ${item.tone}`}>
+                      <div className="security-submodule-card-top">
+                        <span className="security-mini-bullet" aria-hidden="true" />
+                        <strong>{item.title}</strong>
+                      </div>
+                      <p>{item.description}</p>
+                    </article>
+                  ))}
+                </div>
+              ) : null}
+
+              {activeFlotaSection.resource ? (
+                <a href={activeFlotaSection.resource.link} target="_blank" rel="noreferrer" className="cta-link flota-resource-link">
+                  {activeFlotaSection.resource.label}
+                </a>
+              ) : null}
+            </div>
+          </section>
+        ) : activeModule === 'Calidad' ? (
+          <section className="security-submodule-panel quality-submodule-panel">
+            <aside className="security-submodule-sidebar">
+              <div className="security-submodule-header-block">
+                <span className="security-submodule-label">Submódulos</span>
+              </div>
+
+              {Object.keys(calidadSubmodules).map((name) => (
+                <button
+                  key={name}
+                  type="button"
+                  className={name === activeCalidadSubmodule ? 'security-submodule-item active' : 'security-submodule-item'}
+                  onClick={() => setActiveCalidadSubmodule(name)}
+                >
+                  <span className="security-submodule-icon" aria-hidden="true">{calidadSubmodules[name].icon}</span>
+                  <span>{name}</span>
+                </button>
+              ))}
+            </aside>
+
+            <div className="security-submodule-content">
+              <div className="security-submodule-topbar">
+                <div>
+                  <p className="eyebrow accent">{activeCalidadSection.tag}</p>
+                  <h3>{activeCalidadSubmodule}</h3>
+                </div>
+                <span className="security-status-pill good">{activeCalidadSection.status}</span>
+              </div>
+
+              <p className="security-submodule-summary">{activeCalidadSection.summary}</p>
+
+              <div className="security-policy-banner quality-source-banner">
+                <strong>Referencia:</strong>
+                <a href={activeCalidadSection.source} target="_blank" rel="noreferrer">
+                  Ver contenido original de Warehouse
+                </a>
+              </div>
+
+              <div className="security-submodule-grid quality-submodule-grid">
+                {activeCalidadSection.items.map((item) => (
+                  <article key={item.title} className={`security-submodule-card ${item.tone}`}>
+                    <div className="security-submodule-card-top">
+                      <span className="security-mini-bullet" aria-hidden="true" />
+                      <strong>{item.title}</strong>
+                    </div>
+                    <p>{item.description}</p>
+                  </article>
+                ))}
+              </div>
             </div>
           </section>
         ) : activeModule === 'Seguridad' && module.featureCards ? (
