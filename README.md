@@ -32,7 +32,7 @@ No publiques archivos `.env`, `back/data/portal_store.json`, `node_modules` ni `
 Copia los archivos `.env.example` y define los valores reales en el servidor:
 
 - `APP_ENV=production`
-- `CORS_ORIGIN=https://tu-dominio-frontend.com`
+- `CORS_ORIGIN=https://dposibate.com`
 - `GOOGLE_CLIENT_ID=...`
 - `JWT_SECRET=` una cadena aleatoria de al menos 32 caracteres
 - `AUTHORIZED_DOMAIN=lis.com.co`
@@ -59,7 +59,7 @@ En las variables de entorno de Hostinger agrega estos valores reales:
 ```text
 APP_ENV=production
 NODE_ENV=production
-CORS_ORIGIN=https://DOMINIO-DE-TU-FRONTEND
+CORS_ORIGIN=https://dposibate.com
 GOOGLE_CLIENT_ID=TU_CLIENT_ID_DE_GOOGLE
 JWT_SECRET=UNA_CADENA_ALEATORIA_DE_32_O_MAS_CARACTERES
 AUTHORIZED_DOMAIN=lis.com.co
