@@ -782,7 +782,16 @@ function App() {
         body: JSON.stringify({ credential }),
       })
 
-      const data = await response.json()
+      const responseText = await response.text()
+      let data = {}
+
+      try {
+        data = responseText ? JSON.parse(responseText) : {}
+      } catch (parseError) {
+        throw new Error(
+          `El backend no respondió JSON (${response.status}). Verifica VITE_API_URL y que el servicio de Hostinger esté activo.`,
+        )
+      }
 
       if (!response.ok) {
         throw new Error(data?.error || 'No se pudo autenticar con Google.')
