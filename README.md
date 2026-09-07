@@ -44,3 +44,28 @@ en las variables de entorno del servidor.
 
 Antes de publicar, revoca y genera nuevamente cualquier secreto que haya aparecido
 en commits anteriores del repositorio.
+
+### Hostinger Node.js
+
+En la aplicacion Node.js de Hostinger configura:
+
+- Directorio de aplicacion: `back`
+- Archivo de inicio: `server.js`
+- Comando de inicio: `npm start`
+- Version de Node: 20 o superior
+
+En las variables de entorno de Hostinger agrega estos valores reales:
+
+```text
+APP_ENV=production
+NODE_ENV=production
+CORS_ORIGIN=https://DOMINIO-DE-TU-FRONTEND
+GOOGLE_CLIENT_ID=TU_CLIENT_ID_DE_GOOGLE
+JWT_SECRET=UNA_CADENA_ALEATORIA_DE_32_O_MAS_CARACTERES
+AUTHORIZED_DOMAIN=lis.com.co
+SUPERADMIN_EMAILS=jefesistemas@lis.com.co
+```
+
+No uses `localhost` en `CORS_ORIGIN` cuando la aplicación esté publicada. Revisa
+los registros de despliegue de Hostinger: si aparece `GOOGLE_CLIENT_ID es obligatorio`
+o `JWT_SECRET debe existir`, falta una variable de entorno.
