@@ -13,7 +13,10 @@ import { OAuth2Client } from 'google-auth-library'
 const app = express()
 const PORT = Number(process.env.PORT) || 3001
 const isProduction = process.env.APP_ENV === 'production' || process.env.NODE_ENV === 'production'
-const allowedOrigins = (process.env.CORS_ORIGIN ?? 'http://localhost:5173').split(',').map((origin) => origin.trim()).filter(Boolean)
+const allowedOrigins = (process.env.CORS_ORIGIN ?? 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim().replace(/\/$/, ''))
+  .filter(Boolean)
 const jwtSecret = process.env.JWT_SECRET || ''
 const authorizedDomain = (process.env.AUTHORIZED_DOMAIN || 'lis.com.co').toLowerCase()
 const googleClientId = process.env.GOOGLE_CLIENT_ID || ''
