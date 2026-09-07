@@ -4,6 +4,7 @@ node_modules/
 .env.*.local
 back/.env
 front/.env
+back/data/portal_store.json
 .vite/
 dist/
 coverage/

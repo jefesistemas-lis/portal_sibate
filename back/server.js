@@ -14,14 +14,33 @@ const app = express()
 const PORT = Number(process.env.PORT) || 3001
 const isProduction = process.env.APP_ENV === 'production'
 const allowedOrigins = (process.env.CORS_ORIGIN ?? 'http://localhost:5173').split(',').map((origin) => origin.trim()).filter(Boolean)
-const jwtSecret = process.env.JWT_SECRET || 'replace_with_strong_secret'
+const jwtSecret = process.env.JWT_SECRET || ''
 const authorizedDomain = (process.env.AUTHORIZED_DOMAIN || 'lis.com.co').toLowerCase()
 const googleClientId = process.env.GOOGLE_CLIENT_ID || ''
+const superadminEmails = new Set(
+  (process.env.SUPERADMIN_EMAILS || '')
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean),
+)
+const bootstrapAdminEmail = [...superadminEmails][0] || 'admin@lis.com.co'
 const googleClient = new OAuth2Client(googleClientId)
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const STORE_DIR = path.join(__dirname, 'data')
 const STORE_PATH = path.join(STORE_DIR, 'portal_store.json')
+
+if (!googleClientId) {
+  throw new Error('GOOGLE_CLIENT_ID es obligatorio.')
+}
+
+if (!jwtSecret || jwtSecret.length < 32 || jwtSecret === 'replace_with_strong_secret') {
+  throw new Error('JWT_SECRET debe existir y tener al menos 32 caracteres.')
+}
+
+if (isProduction && allowedOrigins.some((origin) => !origin.startsWith('https://'))) {
+  throw new Error('En producción, CORS_ORIGIN solo puede contener orígenes HTTPS.')
+}
 
 const ROLE_PRIORITY = {
   superadmin: 5,
@@ -48,7 +67,7 @@ const ensureStore = () => {
     const initialStore = {
       users: [
         {
-          email: 'jefesistemas@lis.com.co',
+          email: bootstrapAdminEmail,
           name: 'Admin Sistemas',
           role: 'superadmin',
           status: 'active',
@@ -105,7 +124,7 @@ const createUserRecord = (email, name, role = 'viewer', status = 'active') => ({
 const determineRoleFromEmail = (email) => {
   const normalizedEmail = String(email || '').toLowerCase()
 
-  if (normalizedEmail === 'jefesistemas@lis.com.co' || normalizedEmail.includes('admin') || normalizedEmail.includes('sistemas') || normalizedEmail.includes('direccion')) {
+  if (superadminEmails.has(normalizedEmail)) {
     return 'superadmin'
   }
 
@@ -262,6 +281,9 @@ const requirePermission = (permission) => (req, res, next) => {
 }
 
 app.disable('x-powered-by')
+if (isProduction) {
+  app.set('trust proxy', 1)
+}
 app.use(cookieParser())
 app.use(
   helmet({
@@ -322,6 +344,14 @@ app.use(
   }),
 )
 
+const authRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos de autenticación, inténtalo más tarde.' },
+})
+
 app.use(express.json({ limit: '512kb' }))
 app.use(express.urlencoded({ extended: true, limit: '512kb' }))
 
@@ -349,7 +379,7 @@ app.get('/api', (req, res) => {
   })
 })
 
-app.post('/api/auth/google', async (req, res) => {
+app.post('/api/auth/google', authRateLimit, async (req, res) => {
   const { credential } = req.body || {}
 
   if (!credential) {
@@ -495,6 +525,10 @@ app.post('/api/admin/users', authMiddleware, requirePermission('manage_users'), 
     return res.status(400).json({ error: 'Estado no válido.' })
   }
 
+  if (['admin', 'superadmin'].includes(role) && req.user.role !== 'superadmin') {
+    return res.status(403).json({ error: 'Solo un superadministrador puede asignar roles administrativos.' })
+  }
+
   const existingUser = store.users.find((entry) => entry.email === normalizedEmail)
   if (existingUser) {
     return res.status(409).json({ error: 'El usuario ya existe.' })
@@ -518,7 +552,7 @@ app.post('/api/admin/users', authMiddleware, requirePermission('manage_users'), 
   return res.status(201).json({ success: true, user: newUser })
 })
 
-app.put('/api/admin/users/:email/role', authMiddleware, requirePermission('manage_roles'), (req, res) => {
+app.put('/api/admin/users/:email/role', authMiddleware, requireRole(['superadmin']), (req, res) => {
   const { email } = req.params
   const { role } = req.body || {}
   const normalizedEmail = String(email || '').toLowerCase()
