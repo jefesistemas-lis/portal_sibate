@@ -699,7 +699,12 @@ function App() {
       setPortalAnalytics(analyticsData.analytics || null)
 
       if (!usersResponse.ok || !auditResponse.ok || !analyticsResponse.ok) {
-        setAdminNotice('Algunas funciones de administración no están disponibles.')
+        const failedEndpoints = [
+          !usersResponse.ok ? `/api/admin/users (${usersResponse.status})` : null,
+          !auditResponse.ok ? `/api/admin/audit (${auditResponse.status})` : null,
+          !analyticsResponse.ok ? `/api/admin/analytics (${analyticsResponse.status})` : null,
+        ].filter(Boolean).join(', ')
+        setAdminNotice(`No se pudieron cargar: ${failedEndpoints}. Verifica que el backend Node esté conectado al dominio.`)
       } else {
         setAdminNotice('')
       }
