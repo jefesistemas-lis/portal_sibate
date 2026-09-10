@@ -122,6 +122,7 @@ const createUserRecord = (email, name, role = 'viewer', status = 'active') => ({
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
   last_login: null,
+  role_assignment_pending: false,
 })
 
 const determineRoleFromEmail = (email) => {
@@ -146,6 +147,7 @@ const upsertUserFromGoogle = (email, name, picture) => {
     user = createUserRecord(normalizedEmail, name, role, 'active')
     user.picture = picture || ''
     user.last_login = loginTimestamp
+      user.role_assignment_pending = role !== 'superadmin'
     store.users.push(user)
   } else {
     user.name = name || user.name
@@ -154,6 +156,9 @@ const upsertUserFromGoogle = (email, name, picture) => {
     user.permissions = getPermissionsForRole(user.role)
     user.updated_at = new Date().toISOString()
     user.last_login = loginTimestamp
+      if (typeof user.role_assignment_pending !== 'boolean') {
+      user.role_assignment_pending = user.role === 'viewer'
+      }
   }
 
   saveStore(store)
@@ -502,7 +507,9 @@ app.get('/api/admin/analytics', authMiddleware, requireRole(['superadmin', 'admi
 
 app.get('/api/admin/users', authMiddleware, requirePermission('manage_users'), (req, res) => {
   const store = loadStore()
-  res.json({ users: store.users.map((user) => ({ ...user, permissions: getPermissionsForRole(user.role) })) })
+    const users = store.users.map((user) => ({ ...user, permissions: getPermissionsForRole(user.role) }))
+    const pendingRoleUsers = users.filter((user) => user.role_assignment_pending)
+    res.json({ users, pending_role_users: pendingRoleUsers })
 })
 
 app.post('/api/admin/users', authMiddleware, requirePermission('manage_users'), (req, res) => {
@@ -573,6 +580,7 @@ app.put('/api/admin/users/:email/role', authMiddleware, requireRole(['superadmin
   const previousRole = user.role
   user.role = role
   user.permissions = getPermissionsForRole(role)
+    user.role_assignment_pending = false
   user.updated_at = new Date().toISOString()
   saveStore(store)
 

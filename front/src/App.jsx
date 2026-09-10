@@ -573,6 +573,7 @@ function App() {
   const [authLoading, setAuthLoading] = useState(true)
   const [portalAnalytics, setPortalAnalytics] = useState(null)
   const [adminUsers, setAdminUsers] = useState([])
+  const [pendingRoleUsers, setPendingRoleUsers] = useState([])
   const [adminAuditLogs, setAdminAuditLogs] = useState([])
   const [adminNotice, setAdminNotice] = useState('')
   const [newUser, setNewUser] = useState({ email: '', name: '', role: 'viewer', status: 'active' })
@@ -673,6 +674,7 @@ function App() {
   useEffect(() => {
     if (!authUser || !canAccessAdminPanel) {
       setAdminUsers([])
+      setPendingRoleUsers([])
       setAdminAuditLogs([])
       setPortalAnalytics(null)
       return
@@ -692,6 +694,7 @@ function App() {
       ])
 
       setAdminUsers(usersData.users || [])
+      setPendingRoleUsers(usersData.pending_role_users || [])
       setAdminAuditLogs(auditData.audit_logs || [])
       setPortalAnalytics(analyticsData.analytics || null)
 
@@ -854,6 +857,7 @@ function App() {
       const usersData = await usersResponse.json()
       const auditData = await auditResponse.json()
       setAdminUsers(usersData.users || [])
+      setPendingRoleUsers(usersData.pending_role_users || [])
       setAdminAuditLogs(auditData.audit_logs || [])
       setAdminNotice('')
     } catch (error) {
@@ -1153,6 +1157,18 @@ function App() {
                 ) : null}
 
                 {adminNotice ? <div className="admin-notice">{adminNotice}</div> : null}
+
+                {canManageRoles && pendingRoleUsers.length ? (
+                  <div className="admin-notice warning">
+                    <strong>Gestión pendiente:</strong> {pendingRoleUsers.length} usuario(s) ingresaron por primera vez.
+                    {' '}Asigna un rol para habilitar su acceso correspondiente.
+                    <div className="pending-role-users">
+                      {pendingRoleUsers.map((user) => (
+                        <span key={user.email}>{user.name} ({user.email})</span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
 
                 <div className="admin-creation-card panel-card">
                   <div className="panel-header">
