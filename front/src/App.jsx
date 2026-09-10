@@ -577,7 +577,8 @@ function App() {
   const [adminNotice, setAdminNotice] = useState('')
   const [newUser, setNewUser] = useState({ email: '', name: '', role: 'viewer', status: 'active' })
   const [creatingUser, setCreatingUser] = useState(false)
-  const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+  const apiBaseUrl = import.meta.env.VITE_API_URL
+    || (import.meta.env.PROD ? window.location.origin : 'http://localhost:3001')
   const aciVisualUrl = 'https://sites.google.com/lis.com.co/safety-sibate/acis'
   const module = modules[activeModule]
   const activeSecuritySection = securitySubmodules[activeSecuritySubmodule] || securitySubmodules.Inicio

@@ -32,7 +32,7 @@ No publiques archivos `.env`, `back/data/portal_store.json`, `node_modules` ni `
 Copia los archivos `.env.example` y define los valores reales en el servidor:
 
 - `APP_ENV=production`
-- `CORS_ORIGIN=https://dposibate.com`
+- `CORS_ORIGIN=https://dposibate.com.co,https://www.dposibate.com.co`
 - `GOOGLE_CLIENT_ID=...`
 - `JWT_SECRET=` una cadena aleatoria de al menos 32 caracteres
 - `AUTHORIZED_DOMAIN=lis.com.co`
@@ -59,13 +59,16 @@ En las variables de entorno de Hostinger agrega estos valores reales:
 ```text
 APP_ENV=production
 NODE_ENV=production
-CORS_ORIGIN=https://dposibate.com
+CORS_ORIGIN=https://dposibate.com.co,https://www.dposibate.com.co
 GOOGLE_CLIENT_ID=TU_CLIENT_ID_DE_GOOGLE
 JWT_SECRET=UNA_CADENA_ALEATORIA_DE_32_O_MAS_CARACTERES
 AUTHORIZED_DOMAIN=lis.com.co
 SUPERADMIN_EMAILS=jefesistemas@lis.com.co
 ```
 
-No uses `localhost` en `CORS_ORIGIN` cuando la aplicación esté publicada. Revisa
-los registros de despliegue de Hostinger: si aparece `GOOGLE_CLIENT_ID es obligatorio`
-o `JWT_SECRET debe existir`, falta una variable de entorno.
+No uses `localhost` en `CORS_ORIGIN` cuando la aplicación esté publicada. El dominio
+principal también debe enrutar `/api` al proceso Node de Hostinger; si
+`https://dposibate.com.co/api/health` devuelve `404`, el backend no está conectado
+al dominio aunque la página frontend sí cargue. Revisa los registros de despliegue
+de Hostinger: si aparece `GOOGLE_CLIENT_ID es obligatorio` o `JWT_SECRET debe
+existir`, falta una variable de entorno.
