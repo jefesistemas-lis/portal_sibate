@@ -130,15 +130,6 @@ const determineRoleFromEmail = (email) => {
   if (superadminEmails.has(normalizedEmail)) {
     return 'superadmin'
   }
-
-  if (normalizedEmail.includes('seguridad') || normalizedEmail.includes('safety')) {
-    return 'seguridad'
-  }
-
-  if (normalizedEmail.includes('acis')) {
-    return 'acis'
-  }
-
   return 'viewer'
 }
 
@@ -147,12 +138,14 @@ const getPermissionsForRole = (role) => ROLE_PERMISSIONS[role] || ROLE_PERMISSIO
 const upsertUserFromGoogle = (email, name, picture) => {
   const store = loadStore()
   const normalizedEmail = String(email || '').toLowerCase()
+  const loginTimestamp = new Date().toISOString()
   let user = store.users.find((entry) => entry.email === normalizedEmail)
 
   if (!user) {
     const role = determineRoleFromEmail(normalizedEmail)
     user = createUserRecord(normalizedEmail, name, role, 'active')
     user.picture = picture || ''
+    user.last_login = loginTimestamp
     store.users.push(user)
   } else {
     user.name = name || user.name
@@ -160,6 +153,7 @@ const upsertUserFromGoogle = (email, name, picture) => {
     user.role = user.role || determineRoleFromEmail(normalizedEmail)
     user.permissions = getPermissionsForRole(user.role)
     user.updated_at = new Date().toISOString()
+    user.last_login = loginTimestamp
   }
 
   saveStore(store)
@@ -565,6 +559,10 @@ app.put('/api/admin/users/:email/role', authMiddleware, requireRole(['superadmin
     return res.status(400).json({ error: 'Rol no válido.' })
   }
 
+  if (['admin', 'superadmin'].includes(role) && req.user.role !== 'superadmin') {
+    return res.status(403).json({ error: 'Solo un superadministrador puede asignar roles administrativos.' })
+  }
+
   const store = loadStore()
   const user = store.users.find((entry) => entry.email === normalizedEmail)
 
@@ -572,6 +570,7 @@ app.put('/api/admin/users/:email/role', authMiddleware, requireRole(['superadmin
     return res.status(404).json({ error: 'Usuario no encontrado.' })
   }
 
+  const previousRole = user.role
   user.role = role
   user.permissions = getPermissionsForRole(role)
   user.updated_at = new Date().toISOString()
@@ -581,7 +580,7 @@ app.put('/api/admin/users/:email/role', authMiddleware, requireRole(['superadmin
     email: req.user.email,
     action: 'role_updated',
     module: 'admin',
-    details: { targetUser: normalizedEmail, previousRole: user.role, newRole: role },
+    details: { targetUser: normalizedEmail, previousRole, newRole: role },
     success: true,
     ipAddress: req.ip,
     userAgent: req.headers['user-agent'] || 'browser',

@@ -598,6 +598,7 @@ function App() {
   const currentUserAccessLevel = getRoleAccessLevel(activeRole)
   const canOpenSecureAciView = canAccessInformationLevel('confidential', activeRole)
   const canAccessAdminPanel = ['superadmin', 'admin'].includes(activeRole)
+  const canManageRoles = activeRole === 'superadmin'
 
   const dynamicModuleKpis = useMemo(() => {
     if (!portalAnalytics) {
@@ -678,31 +679,41 @@ function App() {
     }
 
     const loadAdminData = async () => {
-      try {
-        const [usersResponse, auditResponse, analyticsResponse] = await Promise.all([
-          fetch(`${apiBaseUrl}/api/admin/users`, { credentials: 'include' }),
-          fetch(`${apiBaseUrl}/api/admin/audit`, { credentials: 'include' }),
-          fetch(`${apiBaseUrl}/api/admin/analytics`, { credentials: 'include' }),
-        ])
+      const [usersResponse, auditResponse, analyticsResponse] = await Promise.all([
+        fetch(`${apiBaseUrl}/api/admin/users`, { credentials: 'include' }),
+        fetch(`${apiBaseUrl}/api/admin/audit`, { credentials: 'include' }),
+        fetch(`${apiBaseUrl}/api/admin/analytics`, { credentials: 'include' }),
+      ])
 
-        if (!usersResponse.ok || !auditResponse.ok || !analyticsResponse.ok) {
-          throw new Error('No se pudo cargar la administración')
-        }
+      const [usersData, auditData, analyticsData] = await Promise.all([
+        usersResponse.ok ? usersResponse.json() : Promise.resolve({}),
+        auditResponse.ok ? auditResponse.json() : Promise.resolve({}),
+        analyticsResponse.ok ? analyticsResponse.json() : Promise.resolve({}),
+      ])
 
-        const usersData = await usersResponse.json()
-        const auditData = await auditResponse.json()
-        const analyticsData = await analyticsResponse.json()
-        setAdminUsers(usersData.users || [])
-        setAdminAuditLogs(auditData.audit_logs || [])
-        setPortalAnalytics(analyticsData.analytics || null)
+      setAdminUsers(usersData.users || [])
+      setAdminAuditLogs(auditData.audit_logs || [])
+      setPortalAnalytics(analyticsData.analytics || null)
+
+      if (!usersResponse.ok || !auditResponse.ok || !analyticsResponse.ok) {
+        setAdminNotice('Algunas funciones de administración no están disponibles.')
+      } else {
         setAdminNotice('')
-      } catch (error) {
-        setPortalAnalytics(null)
-        setAdminNotice('No se pudo cargar la información de administración.')
       }
     }
 
-    loadAdminData()
+    loadAdminData().catch(() => {
+      setPortalAnalytics(null)
+      setAdminNotice('No se pudo conectar con la administración.')
+    })
+
+    const refreshTimer = window.setInterval(() => {
+      loadAdminData().catch(() => {
+        setAdminNotice('No se pudo actualizar la administración.')
+      })
+    }, 30000)
+
+    return () => window.clearInterval(refreshTimer)
   }, [authUser, apiBaseUrl, canAccessAdminPanel])
 
   useEffect(() => {
@@ -1213,6 +1224,7 @@ function App() {
                           <tr>
                             <th>Usuario</th>
                             <th>Rol</th>
+                            <th>Último ingreso</th>
                             <th>Estado</th>
                             <th>Acción</th>
                           </tr>
@@ -1231,6 +1243,7 @@ function App() {
                                   value={user.role}
                                   onChange={(event) => updateUserRole(user.email, event.target.value)}
                                   className="admin-select"
+                                  disabled={!canManageRoles}
                                 >
                                   <option value="viewer">viewer</option>
                                   <option value="acis">acis</option>
@@ -1238,6 +1251,9 @@ function App() {
                                   <option value="admin">admin</option>
                                   <option value="superadmin">superadmin</option>
                                 </select>
+                              </td>
+                              <td>
+                                {user.last_login ? new Date(user.last_login).toLocaleString() : 'Nunca'}
                               </td>
                               <td>
                                 <select
@@ -1278,7 +1294,7 @@ function App() {
                           </tr>
                         </thead>
                         <tbody>
-                          {adminAuditLogs.slice(0, 8).map((log) => (
+                          {adminAuditLogs.length ? adminAuditLogs.slice(0, 8).map((log) => (
                             <tr key={log.id}>
                               <td>{log.action}</td>
                               <td>{log.email}</td>
@@ -1290,7 +1306,11 @@ function App() {
                                 </span>
                               </td>
                             </tr>
-                          ))}
+                          )) : (
+                            <tr>
+                              <td colSpan="5">Aún no hay eventos de auditoría.</td>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>
